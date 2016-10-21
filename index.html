@@ -1,0 +1,44 @@
+<!Doctype html>
+<html>
+<head>
+	<meta name="description" content="A cool thing made with AngularJS">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta charset="utf-8">
+	<title>Turnierplan</title>
+	
+	<link href="lib/brackets.min.css" rel="stylesheet"/>
+	<link href="style.css" rel="stylesheet"/>
+	
+	<script src="lib/jquery-v2.2.4.min.js"></script>
+	<script src="lib/brackets.min.js"></script>
+	<script src="lib/angular-v1.5.2.min.js"></script>
+	
+	<script src="example.js"></script>
+	<script src="app.js"></script>
+</head>
+   
+<body ng-app="myapp">
+	<main class="root">
+		<section class="team-list-container" ng-controller="TeamlistController as teamlist">
+			<ul class="team-list">
+				<li class="team" ng-repeat="team in teamlist.teams">
+					<div class="team-number">
+						<span class="number">{{team.number}}</span>
+					</div>
+					<div class="team-info">
+						<input class="team-name text-input" ng-model="team.name"/>
+						<input class="member-name text-input"
+							ng-repeat="member in team.members" ng-model="member.name"/>
+					</div>
+				</li>
+			</ul>
+			<button ng-click="teamlist.addNew()">Neues Team</button>
+		</section>
+		<section class="tournament-brackets" ng-controller="BracketController as bracket">
+			<button ng-click="bracket.load()" ng-show="bracket.empty">Turnier Starten</button>
+			<div class="brackets-container"></div>
+		</section>
+	</main>
+</body>
+</html>

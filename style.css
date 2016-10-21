@@ -1,0 +1,102 @@
+*{
+ padding:0;
+ margin:0;
+ position:relative;
+ 
+ font-family: Arial,sans-serif;
+}
+
+body{
+ width:100%;
+ height:100%;
+ height:100vh;
+	
+ overflow: hidden;
+}
+
+.root{
+ height:100%;
+	
+ display:flex;
+ flex-flow: row nowrap;
+ 
+}
+/*========================================================================*/
+.team-list-container{
+ max-width:250px;
+ flex-grow:1;
+ 
+ overflow-x: hidden;
+ overflow-y: auto;
+}
+.team-list{
+ background: #0f0;
+ 
+}
+.team-list .team{
+ 
+ display:flex;
+ flex-flow: row nowrap;
+ 
+}
+.team-list .team:nth-child(odd){
+ background: #FFF;
+}
+.team-list .team:nth-child(even){
+ background: #CCC;
+}
+.team-number{
+ width: auto;
+	
+ color: #000;
+ font-size: 30px;
+ font-weight: 600;
+ 
+ display:flex;
+ flex-flow: row nowrap;
+ justify-content: center;
+ align-items: center;
+ 
+}
+.team-number .number{
+	
+}
+/*========================================================================*/
+.team-info{
+ flex-grow: 1;
+ 
+ padding: 0 5px;
+}
+.team-info .text-input{
+ width: 100%;
+}
+.team-info .team-name{
+ border: none;
+ font-size: 20px;
+}
+.text-input{
+
+ border: none;
+ border-bottom: 3px solid #000;
+ background: transparent;
+ 
+ color: #000;
+ font-size: 16px;
+ font-weight: 600;
+ 
+ margin: 5px 0;
+ padding: 5px 5px 0;	
+}
+.text-input:hover{
+ background: #DDD;
+}
+.text-input:focus{
+ background: #DDD;
+}
+/*========================================================================*/
+.tournament-brackets{
+ flex-grow:1;
+ 	
+ background: #0ff;
+	
+}
