@@ -22,7 +22,7 @@
 	<main class="root">
 		<section class="team-list-container" ng-controller="TeamlistController as teamlist">
 			<ul class="team-list">
-				<li class="team" ng-repeat="team in teamlist.teams">
+				<li class="team" ng-repeat="team in teamlist.teamList">
 					<div class="team-number">
 						<span class="number">{{team.number}}</span>
 					</div>
@@ -36,7 +36,7 @@
 			<button ng-click="teamlist.addNew()">Neues Team</button>
 		</section>
 		<section class="tournament-brackets" ng-controller="BracketController as bracket">
-			<button ng-click="bracket.load()" ng-show="bracket.empty">Turnier Starten</button>
+			<button ng-click="bracket.load()" ng-show="bracket.empty" ng-disabled="bracket.unable()">Turnier Starten</button>
 			<div class="brackets-container"></div>
 		</section>
 	</main>

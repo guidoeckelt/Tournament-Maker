@@ -18,18 +18,21 @@ app.factory('teams',function(){
 app.controller("BracketController", function($scope,teams) {
 	var self = this;
 	self.empty = true;
+	self.teamList = teams.list;
 	
+	self.unable = function(){
+		return self.teamList.length == 0||self.teamList.length%4!=0
+	};
 	self.load = function(){
 		var data = {
 			teams: new Array(),
 			results: new Array()
 		}
-		var teamList = teams.list;
 		
-		teamList.forEach(function(team, index){
+		self.teamList.forEach(function(team, index){
 			if(index%2 == 1){
-				var team1 = teamList[index-1].name;
-				var team2 = teamList[index].name;
+				var team1 = self.teamList[index-1].name;
+				var team2 = self.teamList[index].name;
 				data.teams.push([team1 ,team2]);
 			}else{
 				console.log(team.name);
@@ -48,10 +51,11 @@ app.controller("BracketController", function($scope,teams) {
 
 app.controller("TeamlistController", function($scope, teams) {
 	var self = this;
-	self.teams = teams.list;
+	self.teams = teams;
+	self.teamList = teams.list;
 	
 	self.addNew =function(){
-		teams.addNew();
+		self.teams.addNew();
 	};
 });
 
