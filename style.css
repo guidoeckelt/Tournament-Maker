@@ -98,7 +98,11 @@ body{
  flex-grow:1;
  	
  background: #0ff;
-	
+ 
+ display: flex;
+ flex-flow: column nowrap;
+ justify-content: center;
+ align-items: center;
 }
 .jQBracket{
 // transform: scale(5);
