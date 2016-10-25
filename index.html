@@ -7,12 +7,9 @@
 	<meta charset="utf-8">
 	<title>Turnierplan</title>
 	
-	<link href="lib/brackets.min.css" rel="stylesheet"/>
 	<link href="style.css" rel="stylesheet"/>
 	
 	<script src="lib/gojs-v1.6.19.js"></script>
-	<script src="lib/jquery-v2.2.4.min.js"></script>
-	<script src="lib/brackets.min.js"></script>
 	<script src="lib/angular-v1.5.2.min.js"></script>
 	
 	<script src="tournament.js"></script>
@@ -38,7 +35,7 @@
 		</section>
 		<section class="tournament-brackets" ng-controller="BracketController as bracket">
 			<button ng-click="bracket.load()" ng-show="bracket.empty" ng-disabled="bracket.unable()">Turnier Starten</button>
-			<div id="myDiagramDiv" ng-show="!bracket.empty" style="border: solid 1px black; background: #4D4D4D; width:700px; height:600px"></div>
+			<div id="myDiagramDiv" ng-show="!bracket.empty" style="border: solid 1px black; background: #4D4D4D; width:1000px; height:1000px"></div>
 		</section>
 	</main>
 </body>
