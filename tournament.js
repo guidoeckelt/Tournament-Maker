@@ -21,8 +21,7 @@ function initBrackets(teamList) {
 	  $(go.Node, "Auto",
 		{ selectable: false },
 		$(go.Shape, "Rectangle",
-		  { fill: '#8C8C8C', stroke: null },
-		  // Shape.fill is bound to Node.data.color
+		  { fill: '#8C8C8C', stroke: null },// Shape.fill is bound to Node.data.color
 		  new go.Binding("fill", "color")),
 		$(go.Panel, "Table",
 		  $(go.RowColumnDefinition, { column: 0, separatorStroke: "black" }),
