@@ -19,9 +19,9 @@
 <body ng-app="myapp">
 	<main class="root">
 		<section class="team-list-container" ng-controller="TeamlistController as teamlist">
-			<button ng-click="teamlist.addNew()">Neues Team</button>
+			<button ng-hide="teamlist.appService.teams.length==8" ng-click="teamlist.addNew()">Neues Team</button>
 			<ul class="team-list">
-				<li class="team" ng-repeat="team in teamlist.teamService.list">
+				<li class="team" ng-repeat="team in teamlist.appService.teams">
 					<div class="team-number">
 						<span class="number">{{team.number}}</span>
 					</div>
@@ -33,10 +33,13 @@
 				</li>
 			</ul>
 		</section>
-		<section class="tournament-brackets" ng-controller="BracketController as bracket">
+		<section id="" class="tournament-brackets" ng-controller="BracketController as bracket">
 			<button ng-click="bracket.load()" ng-show="bracket.empty" ng-disabled="bracket.unable()">Turnier Starten</button>
-			<div id="myDiagramDiv" ng-show="!bracket.empty" style="border: solid 1px black; background: #4D4D4D; width:1000px; height:1000px"></div>
+			<div id="myDiagramDiv" class="canvas-container" ng-show="!bracket.empty"
+				ng-style="{{ '{ width:'+bracket.canvasWidth()+',height:'+bracket.canvasHeight()+'}'}} "></div>
+			<div class="banner></div></div>
 		</section>
 	</main>
 </body>
 </html>
+<!-- width:1000px; height:1000px-->

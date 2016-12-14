@@ -1,45 +1,82 @@
 
 var app = angular.module("myapp", []);
 
-app.factory('TeamService',function(){
-	var teamService ={};
-	teamService.list = new Array();
+app.factory('AppService',function(){
+	var appService ={};
+	appService.teams = new Array();
 	
-	teamService.addNew = function(){
-		var number = teamService.list.length+1;
+	appService.addNew = function(){
+		var number = this.teams.length+1;
 		var team = new Team(number,'TeamName'+number);
-		teamService.list.push(team);
+		this.teams.push(team);
 		console.log('New Team '+number+' Added');
 	};
 	
-	return teamService;
+	appService.browserWidth =  function() {
+		if (self.innerWidth) {
+			return self.innerWidth;
+		}
+
+		if (document.documentElement && document.documentElement.clientWidth) {
+			return document.documentElement.clientWidth;
+		}
+
+		if (document.body) {
+			return document.body.clientWidth;
+		}
+	};
+
+	appService.browserHeight = function() {
+		if (self.innerHeight) {
+			return self.innerHeight;
+		}
+
+		if (document.documentElement && document.documentElement.clientHeight) {
+			return document.documentElement.clientHeight;
+		}
+
+		if (document.body) {
+			return document.body.clientHeight;	
+		}
+	};
+	return appService;
 });
 
-app.controller("BracketController", function($scope,TeamService) {
+app.controller("BracketController", ['$scope','AppService',function($scope,AppService) {
 	var self = this;
 	self.empty = true;
-	self.teamService = TeamService;
+	self.appService = AppService;
 	
 	self.unable = function(){
-		return self.teamService.list.length == 0||self.teamService.list.length%4!=0
+		return self.appService.teams.length == 0||self.appService.teams.length%4!=0
 	};
+	
+	self.canvasWidth = function(){
+		
+		return "'"+(self.appService.browserWidth()-250)+"px'";
+	};
+	self.canvasHeight = function(){
+		
+		return "'"+self.appService.browserHeight()+"px'";
+	};
+	
 	self.load = function(){
 		console.log('Tournament Bracket Loading');
 		self.empty = false;
-		var teamList = self.teamService.list.map(function(team){return team.name});;
+		var teamList = self.appService.teams.map(function(team){return team.name});;
 		initBrackets(teamList);
 		console.log('Tournament Bracket Loaded');
 	};
-});
+}]);
 
-app.controller("TeamlistController", function($scope, TeamService) {
+app.controller("TeamlistController", ['$scope','AppService',function($scope, AppService) {
 	var self = this;
-	self.teamService = TeamService;
+	self.appService = AppService;
 	
 	self.addNew =function(){
-		self.teamService.addNew();
+		self.appService.addNew();
 	};
-});
+}]);
 
 function Team(number, name, membersAmount = 2){
 	this.number = number;
