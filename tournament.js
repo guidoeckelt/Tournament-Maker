@@ -1,13 +1,48 @@
 // GoJS Tournament Bracket Diagramm
-function TournamentBracket(){
+function TournamentBracket(teamList){
+	var self = this;
+	self.teamList = teamList;
+	self.bracket = null;
+	
+	self.onMatchEnded = function(onMatchEnded){
+		self.bracket.model.addChangedListener(function(e) {
+			if (e.propertyName !== 'score1' && e.propertyName !== 'score2') return;
+			var data = e.object;
+			if (isNaN(data.score1) || isNaN(data.score2)) return;
 
+			// TODO: What happens if score1 and score2 are the same number?
+
+			// both score1 and score2 are numbers,
+			// set the name of the higher-score'd player in the advancing (parent) node
+			// if the data.parentNumber is 0, then we set player1 on the parent
+			// if the data.parentNumber is 1, then we set player2
+			var parent = self.bracket.findNodeForKey(data.parent);
+			if (parent === null) return;
+			var score1 = parseInt(data.score1);
+			var score2 = parseInt(data.score2);
+
+			var winningTeam = score1 > score2 ? data.player1 : data.player2;
+			var loseTeam = score1 > score2 ? data.player2: data.player1;
+			if (score1 === score2) winningTeam = "";
+			self.bracket.model.setDataProperty
+				(parent.data, (data.parentNumber === 0 ? "player1" : "player2"), winningTeam);
+			
+			if(data.score1 != null&&data.score2 != null){
+				var data = [{"name" : winningTeam , "score" : 3},
+				{"name" : loseTeam , "score" : 3}];
+				onMatchEnded(winningTeam, loseTeam);
+			}
+			//console.log(JSON.stringify(model));
+		});
+	};
+	
+	self.appendTo = function(parentNode){
+		self.bracket = initBrackets(parentNode, self.teamList);
+	};
 }
-var myDiagram;
-function initBrackets(teamList, onMatchEnded) {
-	if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+function initBrackets(parentNode, teamList) {
 	var $ = go.GraphObject.make;  // for conciseness in defining templates
-
-	myDiagram = $(go.Diagram, "myDiagramDiv",  // create a Diagram for the DIV HTML element
+	var myDiagram = $(go.Diagram, parentNode,  // create a Diagram for the DIV HTML element
 		{
 		  initialContentAlignment: go.Spot.Center,  // center the content
 		  "textEditingTool.starting": go.TextEditingTool.SingleClick,
@@ -62,48 +97,14 @@ function initBrackets(teamList, onMatchEnded) {
 		  selectable: false },
 		$(go.Shape, { strokeWidth: 2, stroke: 'white' }));
 
-	makeModel(teamList, onMatchEnded);
+	myDiagram.model = makeModel(teamList);
+	return myDiagram;
 } // end init
-
-// validation function for editing text
-function isValidScore(textblock, oldstr, newstr) {
-	if (newstr === "") return true;
-	var num = parseInt(newstr, 10);
-	return !isNaN(num) && num >= 0 && num < 1000;
-}
 //Generate TreeModel + ChangeListener
-function makeModel(players, onMatchEnded) {
+function makeModel(players) {
 	var pairs = createPairs(players);
 	//console.log(pairs);
-	var model = new go.TreeModel(pairs);
-
-	model.addChangedListener(function(e) {
-		if (e.propertyName !== 'score1' && e.propertyName !== 'score2') return;
-		var data = e.object;
-		if (isNaN(data.score1) || isNaN(data.score2)) return;
-
-		// TODO: What happens if score1 and score2 are the same number?
-
-		// both score1 and score2 are numbers,
-		// set the name of the higher-score'd player in the advancing (parent) node
-		// if the data.parentNumber is 0, then we set player1 on the parent
-		// if the data.parentNumber is 1, then we set player2
-		var parent = myDiagram.findNodeForKey(data.parent);
-		if (parent === null) return;
-		var score1 = parseInt(data.score1);
-		var score2 = parseInt(data.score2);
-
-		var winningTeam = score1 > score2 ? data.player1 : data.player2;
-		var loseTeam = score1 > score2 ? data.player2: data.player1;
-		if (score1 === score2) winningTeam = "";
-		myDiagram.model.setDataProperty(parent.data, (data.parentNumber === 0 ? "player1" : "player2"), winningTeam);
-		
-		if(data.score1 != null&&data.score2 != null){
-			onMatchEnded(winningTeam, loseTeam);
-		}
-		//console.log(JSON.stringify(model));
-	});
-	myDiagram.model = model;
+	return new go.TreeModel(pairs);
 }
 // Generates the original graph from an array of player names
 function createPairs(players) {
@@ -148,4 +149,10 @@ function makeLevel(levelGroups, currentLevel, totalGroups, players) {
 
 	// after the first created level there are no player names
 	if (currentLevel >= 0) makeLevel(parentKeys, currentLevel, totalGroups, null)
+}
+// validation function for editing text
+function isValidScore(textblock, oldstr, newstr) {
+	if (newstr === "") return true;
+	var num = parseInt(newstr, 10);
+	return !isNaN(num) && num >= 0 && num < 1000;
 }

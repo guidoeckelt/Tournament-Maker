@@ -46,6 +46,7 @@ app.controller("BracketController", ['$scope','AppService',function($scope,AppSe
 	var self = this;
 	self.empty = true;
 	self.appService = AppService;
+	self.bracket;
 	
 	self.unable = function(){
 		return self.appService.teams.length == 0||self.appService.teams.length%4!=0
@@ -63,11 +64,13 @@ app.controller("BracketController", ['$scope','AppService',function($scope,AppSe
 	self.load = function(){
 		console.log('Tournament Bracket Loading');
 		self.empty = false;
-		var teamList = self.appService.teams.map(function(team){return team.name});;
-		initBrackets(teamList, self.onMatchEnded);
+		var teamList = self.appService.teams.map(function(team){return team.name});
+		self.bracket = new TournamentBracket(teamList);
+		self.bracket.appendTo("myDiagramDiv");
+		self.bracket.onMatchEnded(self.endMatchAnimation);
 		console.log('Tournament Bracket Loaded');
 	};
-	self.onMatchEnded = function(winTeam, loseTeam){
+	self.endMatchAnimation = function(winTeam, loseTeam){
 		var body = document.getElementsByTagName('body')[0];
 		
 		var animationContainer = document.createElement('div');
