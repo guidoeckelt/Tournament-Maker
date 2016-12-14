@@ -3,7 +3,7 @@ function TournamentBracket(){
 
 }
 var myDiagram;
-function initBrackets(teamList) {
+function initBrackets(teamList, onMatchEnded) {
 	if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
 	var $ = go.GraphObject.make;  // for conciseness in defining templates
 
@@ -62,7 +62,7 @@ function initBrackets(teamList) {
 		  selectable: false },
 		$(go.Shape, { strokeWidth: 2, stroke: 'white' }));
 
-	makeModel(teamList);
+	makeModel(teamList, onMatchEnded);
 } // end init
 
 // validation function for editing text
@@ -72,7 +72,7 @@ function isValidScore(textblock, oldstr, newstr) {
 	return !isNaN(num) && num >= 0 && num < 1000;
 }
 //Generate TreeModel + ChangeListener
-function makeModel(players) {
+function makeModel(players, onMatchEnded) {
 	var pairs = createPairs(players);
 	//console.log(pairs);
 	var model = new go.TreeModel(pairs);
@@ -90,11 +90,17 @@ function makeModel(players) {
 		// if the data.parentNumber is 1, then we set player2
 		var parent = myDiagram.findNodeForKey(data.parent);
 		if (parent === null) return;
+		var score1 = parseInt(data.score1);
+		var score2 = parseInt(data.score2);
 
-		var playerName = parseInt(data.score1) > parseInt(data.score2) ? data.player1 : data.player2;
-		if (parseInt(data.score1) === parseInt(data.score2)) playerName = "";
-		myDiagram.model.setDataProperty(parent.data, (data.parentNumber === 0 ? "player1" : "player2"), playerName);
+		var winningTeam = score1 > score2 ? data.player1 : data.player2;
+		var loseTeam = score1 > score2 ? data.player2: data.player1;
+		if (score1 === score2) winningTeam = "";
+		myDiagram.model.setDataProperty(parent.data, (data.parentNumber === 0 ? "player1" : "player2"), winningTeam);
 		
+		if(data.score1 != null&&data.score2 != null){
+			onMatchEnded(winningTeam, loseTeam);
+		}
 		//console.log(JSON.stringify(model));
 	});
 	myDiagram.model = model;
