@@ -17,20 +17,24 @@ function TournamentBracket(teamList){
 			// if the data.parentNumber is 0, then we set player1 on the parent
 			// if the data.parentNumber is 1, then we set player2
 			var parent = self.bracket.findNodeForKey(data.parent);
-			if (parent === null) return;
+			
 			var score1 = parseInt(data.score1);
 			var score2 = parseInt(data.score2);
 
 			var winningTeam = score1 > score2 ? data.player1 : data.player2;
 			var loseTeam = score1 > score2 ? data.player2: data.player1;
 			if (score1 === score2) winningTeam = "";
-			self.bracket.model.setDataProperty
-				(parent.data, (data.parentNumber === 0 ? "player1" : "player2"), winningTeam);
 			
 			if(data.score1 != null&&data.score2 != null){
-				var data = [{"name" : winningTeam , "score" : 3},
+				var eventData = [{"name" : winningTeam , "score" : 3},
 				{"name" : loseTeam , "score" : 3}];
 				onMatchEnded(winningTeam, loseTeam);
+				if (parent === null){
+					
+				}else{
+					self.bracket.model.setDataProperty
+						(parent.data, (data.parentNumber === 0 ? "player1" : "player2"), winningTeam);
+				}
 			}
 			//console.log(JSON.stringify(model));
 		});
@@ -56,11 +60,11 @@ function initBrackets(parentNode, teamList) {
 	  $(go.Node, "Auto",
 		{ selectable: false },
 		$(go.Shape, "Rectangle",
-		  { fill: '#8C8C8C', stroke: null },// Shape.fill is bound to Node.data.color
+		  { fill: '#0062B7', stroke: null },// Shape.fill is bound to Node.data.color
 		  new go.Binding("fill", "color")),
 		$(go.Panel, "Table",
 		  $(go.RowColumnDefinition, { column: 0, separatorStroke: "black" }),
-		  $(go.RowColumnDefinition, { column: 1, separatorStroke: "black", background: "#BABABA" }),
+		  $(go.RowColumnDefinition, { column: 1, separatorStroke: "black", background: "#FAFAFA" }),
 		  $(go.RowColumnDefinition, { row: 0, separatorStroke: "black" }),
 		  $(go.RowColumnDefinition, { row: 1, separatorStroke: "black" }),
 		  $(go.TextBlock, "",
@@ -95,7 +99,7 @@ function initBrackets(parentNode, teamList) {
 	  $(go.Link,
 		{ routing: go.Link.Orthogonal,
 		  selectable: false },
-		$(go.Shape, { strokeWidth: 2, stroke: 'white' }));
+		$(go.Shape, { strokeWidth: 2, stroke: '#FAFAFA' }));
 
 	myDiagram.model = makeModel(teamList);
 	return myDiagram;
