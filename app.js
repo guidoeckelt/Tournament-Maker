@@ -143,39 +143,23 @@ window.addEventListener('load', function() {
 		slideList.appendChild(img);
 	}
 	var options ={
-		// allow swipe to slide
-allowSwipe: true,
-// autoplay
-autoplay: true,
-// shows controls at the bottom
-controlsBelow: false,
-// delay in ms
-delay: 30000,
-// infinite loop
-loopSlides: true,
-// show navigation arrows
-navArrows: false,
-// CSS classes for next/prev buttons
-navNextClass: '',
+allowSwipe: true,// allow swipe to slide
+autoplay: true,// autoplay
+controlsBelow: false,// shows controls at the bottom
+delay: 30000,// delay in ms
+loopSlides: true,// infinite loop
+navArrows: false,// show navigation arrows
+navNextClass: '',// CSS classes for next/prev buttons
 navPrevClass: '',
-// shows play button
-playButton: false,
-// CSS class for play button
-playButtonClass: '',
-// number of times for autoplay to loop over slides
-playLoop: -1,
-// autoplay when user uses navigation arrows
-pauseOnUserNav: false,
-// shows indicators
-showIndicators: false,
-// slide to start on
-startOnSlide: 1,
-// transition delay
-transitionTime: 2000,
-// easing function
-transitionTimingFunction: 'ease-out',
-// fade or slide
-transitionEffect: 'fade'
+playButton: false,// shows play button
+playButtonClass: '',// CSS class for play button
+playLoop: -1,// number of times for autoplay to loop over slides
+pauseOnUserNav: false,// autoplay when user uses navigation arrows
+showIndicators: false,// shows indicators
+startOnSlide: 1,// slide to start on
+transitionTime: 2000,// transition delay
+transitionTimingFunction: 'ease-out',// easing function
+transitionEffect: 'fade'// fade or slide
 	};
 	Slideshow(document.getElementById("slideshow"),options);
 });
